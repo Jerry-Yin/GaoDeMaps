@@ -36,7 +36,7 @@ import java.util.List;
  * Created by Yin on 2016/3/28.
  * 关键字搜索
  */
-public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClickListener, AMap.InfoWindowAdapter, View.OnClickListener, TextWatcher, PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener {
+public class KeyWordSearchActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap.InfoWindowAdapter, View.OnClickListener, TextWatcher, PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener {
 
     private MapView mMapView;
     private Button mBtnSearch, mBtnNext;

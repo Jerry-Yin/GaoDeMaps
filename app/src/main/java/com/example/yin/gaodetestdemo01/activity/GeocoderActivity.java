@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * 地理编码
  * （ps: 插件运用      compile 'com.jakewharton:butterknife:7.0.1')
  */
-public class GeocoderActivity extends Activity implements GeocodeSearch.OnGeocodeSearchListener {
+public class GeocoderActivity extends BaseActivity implements GeocodeSearch.OnGeocodeSearchListener {
 
 
     @Bind(R.id.btn_regeo)

@@ -26,9 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 申请的key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="56d6a42b2e657746630d8873256466e1"/>
+            android:value="56d6a42b2e657746630d8873256466e1"
+            />
 
         <activity
             android:name=".activity.MainActivity"
@@ -44,6 +46,7 @@
         <activity android:name=".activity.KeyWordSearchActivity"/>
         <activity android:name=".activity.AroundSearchActivity"/>
         <activity android:name=".activity.GeocoderActivity"/>
+        <activity android:name=".activity.NavigationActivity"/>
 
         <!--/定位服务-->
         <service android:name="com.amap.api.location.APSService"></service>

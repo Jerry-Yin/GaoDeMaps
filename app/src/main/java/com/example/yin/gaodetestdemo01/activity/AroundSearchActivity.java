@@ -37,7 +37,7 @@ import java.util.List;
  * Created by Yin on 2016/4/12.
  * 周边搜索
  */
-public class AroundSearchActivity extends Activity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, PoiSearch.OnPoiSearchListener {
+public class AroundSearchActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, PoiSearch.OnPoiSearchListener {
 
     private static final String TAG = "AroundSearchActivity";
 
