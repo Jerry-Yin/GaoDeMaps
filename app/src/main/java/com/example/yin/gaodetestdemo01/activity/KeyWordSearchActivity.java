@@ -1,6 +1,7 @@
 package com.example.yin.gaodetestdemo01.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.amap.api.maps.AMapUtils;
 import com.example.yin.gaodetestdemo01.R;
+import com.example.yin.gaodetestdemo01.util.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +143,7 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
      * 开始进行poi搜索
      */
     protected void doSearchQuery() {
-        showProgressDialog();// 显示进度框
+        DialogUtils.showProgressDialog(KeyWordSearchActivity.this, "正在搜索", mkeyWord);// 显示进度框
         currentPage = 0;
         query = new PoiSearch.Query(mkeyWord, "", mEtCity.getText().toString());// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(10);// 设置每页最多返回多少条poiitem
@@ -202,7 +204,7 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
      */
     @Override
     public void onPoiSearched(PoiResult result, int rCode) {
-        dissmissProgressDialog();// 隐藏对话框
+        DialogUtils.dissmissProgressDialog();// 隐藏对话框
         if (rCode == 1000) {
             if (result != null && result.getQuery() != null) {// 搜索poi的结果
                 if (result.getQuery().equals(query)) {// 是否是同一条
@@ -250,28 +252,6 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
                     + cities.get(i).getAdCode() + "\n";
         }
        Toast.makeText(KeyWordSearchActivity.this, infomation, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 显示进度框
-     */
-    private void showProgressDialog() {
-        if (progDialog == null)
-            progDialog = new ProgressDialog(this);
-        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progDialog.setIndeterminate(false);
-        progDialog.setCancelable(false);
-        progDialog.setMessage("正在搜索:\n" + mkeyWord);
-        progDialog.show();
-    }
-
-    /**
-     * 隐藏进度框
-     */
-    private void dissmissProgressDialog() {
-        if (progDialog != null) {
-            progDialog.dismiss();
-        }
     }
 
     @Override

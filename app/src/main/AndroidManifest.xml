@@ -41,10 +41,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.KeyWordSearchActivity">
-        </activity>
-
+        <activity android:name=".activity.KeyWordSearchActivity"/>
         <activity android:name=".activity.AroundSearchActivity"/>
+        <activity android:name=".activity.GeocoderActivity"/>
 
         <!--/定位服务-->
         <service android:name="com.amap.api.location.APSService"></service>

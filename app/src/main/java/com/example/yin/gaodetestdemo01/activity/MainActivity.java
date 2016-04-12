@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 //                snackbar.show();
 
                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("功能选择").setItems(new String[]{"关键字搜索", "周边搜索", "区域搜索"}, new DialogInterface.OnClickListener() {
+                builder.setTitle("功能选择").setItems(new String[]{"关键字搜索", "周边搜索", "区域搜索", "地理编码及逆向编码"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
                             case 2:
 
+                                break;
+                            case 3:
+                                startActivity(new Intent(MainActivity.this, GeocoderActivity.class));
                                 break;
                         }
                     }
