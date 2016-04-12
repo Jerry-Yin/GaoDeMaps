@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                                 break;
 
                             case 1:
-
+                                startActivity(new Intent(MainActivity.this, AroundSearchActivity.class));
                                 break;
 
                             case 2:

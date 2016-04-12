@@ -16,6 +16,8 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!--<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />-->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -40,8 +42,9 @@
         </activity>
 
         <activity android:name=".activity.KeyWordSearchActivity">
-
         </activity>
+
+        <activity android:name=".activity.AroundSearchActivity"/>
 
         <!--/定位服务-->
         <service android:name="com.amap.api.location.APSService"></service>

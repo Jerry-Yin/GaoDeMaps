@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,20 +21,25 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
+import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.amap.api.maps.AMapUtils;
 import com.example.yin.gaodetestdemo01.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Yin on 2016/3/28.
+ * 关键字搜索
  */
-public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClickListener, AMap.InfoWindowAdapter, View.OnClickListener, TextWatcher, PoiSearch.OnPoiSearchListener {
+public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClickListener, AMap.InfoWindowAdapter, View.OnClickListener, TextWatcher, PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener {
 
     private MapView mMapView;
     private Button mBtnSearch, mBtnNext;
-    private EditText mEtKeyword, mEtCity;
+    private EditText mEtCity;
+    private AutoCompleteTextView mEtKeyword;
     private AMap mAmap;
 
     private String mkeyWord = "";// 要输入的poi搜索关键字
@@ -50,7 +58,7 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
         setContentView(R.layout.layout_keyword_search);
 
         initViews(savedInstanceState);
-        inoitData();
+        initData();
     }
     private void initViews(Bundle state) {
         mMapView = (MapView) findViewById(R.id.map_view_keyword);
@@ -61,14 +69,14 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
         mBtnSearch.setOnClickListener(this);
         mBtnNext.setOnClickListener(this);
 
-        mEtKeyword = (EditText) findViewById(R.id.et_keyWord);
+        mEtKeyword = (AutoCompleteTextView) findViewById(R.id.et_keyWord);
         mEtCity = (EditText) findViewById(R.id.et_city);
         mEtKeyword.addTextChangedListener(this);
     }
 
 
 
-    private void inoitData() {
+    private void initData() {
         if (mAmap == null){
             mAmap = mMapView.getMap();
             setupMap();
@@ -110,10 +118,22 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
                 break;
 
             case R.id.btn_nextButton:
-
+                nextResult();
                 break;
             default:
                 break;
+        }
+    }
+
+    private void nextResult() {
+        if (query != null && poiSearch != null && poiResult != null) {
+            if (poiResult.getPageCount() - 1 > currentPage) {
+                currentPage++;
+                query.setPageNum(currentPage);// 设置查后一页
+                poiSearch.searchPOIAsyn();
+            } else {
+                Toast.makeText(KeyWordSearchActivity.this, R.string.no_result, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -146,13 +166,13 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-//        String newText = s.toString().trim();
-//        if (!AMapUtil.IsEmptyOrNullString(newText)) {
-//            InputtipsQuery inputquery = new InputtipsQuery(newText, editCity.getText().toString());
-//            Inputtips inputTips = new Inputtips(PoiKeywordSearchActivity.this, inputquery);
-//            inputTips.setInputtipsListener(this);
-//            inputTips.requestInputtipsAsyn();
-//        }
+        String newText = s.toString().trim();
+        if (!TextUtils.isEmpty(newText)) {
+            InputtipsQuery inputquery = new InputtipsQuery(newText, mEtCity.getText().toString());
+            Inputtips inputTips = new Inputtips(KeyWordSearchActivity.this, inputquery);
+            inputTips.setInputtipsListener(this);
+            inputTips.requestInputtipsAsyn();
+        }
     }
 
     @Override
@@ -254,4 +274,21 @@ public class KeyWordSearchActivity extends Activity implements AMap.OnMarkerClic
         }
     }
 
+    @Override
+    public void onGetInputtips(List<Tip> tipList, int rCode) {
+        if (rCode == 1000) {// 正确返回
+            List<String> listString = new ArrayList<String>();
+            for (int i = 0; i < tipList.size(); i++) {
+                listString.add(tipList.get(i).getName());
+            }
+            ArrayAdapter<String> aAdapter = new ArrayAdapter<String>(
+                    getApplicationContext(),
+                    R.layout.route_inputs, listString);
+            mEtKeyword.setAdapter(aAdapter);
+            aAdapter.notifyDataSetChanged();
+        } else {
+//            ToastUtil.showerror(this, rCode);
+            Toast.makeText(this, rCode, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
